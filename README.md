@@ -1,6 +1,6 @@
 # MineWorldGenerator - Minecraft自定义世界生成插件
 
-![Minecraft](https://img.shields.io/badge/Minecraft-1.12--1.20-blueviolet) ![License](https://img.shields.io/badge/License-MIT-green)
+![Minecraft](https://img.shields.io/badge/Minecraft-1.12--1.20-LightGreen) ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## 📖 项目简介
 这是一个基于Bukkit/Spigot API开发的自定义世界生成插件，通过分形噪声算法生成动态地形，支持可配置的矿石分布系统。适用于需要自定义矿场世界的服务器场景。
