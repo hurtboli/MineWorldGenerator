@@ -1,0 +1,71 @@
+# config.yml
+ores:
+  COAL_ORE:
+    minY: 1
+    maxY: 130
+    chance: 0.0142
+
+  IRON_ORE:
+    minY: 1
+    maxY: 130
+    chance: 0.0088
+
+  GOLD_ORE:
+    minY: 1
+    maxY: 60
+    chance: 0.0036
+
+  REDSTONE_ORE:
+    minY: 1
+    maxY: 60
+    chance: 0.0102
+
+  LAPIS_ORE:
+    minY: 1
+    maxY: 60
+    chance: 0.0059
+
+  DIAMOND_ORE:
+    minY: 1
+    maxY: 21
+    chance: 0.0033
+
+  EMERALD_ORE:
+    minY: 1
+    maxY: 21
+    chance: 0.0022
+
+  COAL_BLOCK:
+    minY: 1
+    maxY: 130
+    chance: 0.0142
+
+  IRON_BLOCK:
+    minY: 1
+    maxY: 130
+    chance: 0.0088
+
+  GOLD_BLOCK:
+    minY: 1
+    maxY: 60
+    chance: 0.0036
+
+  REDSTONE_BLOCK:
+    minY: 1
+    maxY: 60
+    chance: 0.0102
+
+  LAPIS_BLOCK:
+    minY: 1
+    maxY: 60
+    chance: 0.0059
+
+  DIAMOND_BLOCK:
+    minY: 1
+    maxY: 21
+    chance: 0.0033
+
+  EMERALD_BLOCK:
+    minY: 1
+    maxY: 21
+    chance: 0.0022
