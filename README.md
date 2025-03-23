@@ -1,4 +1,4 @@
-# MineWorldGenerator - Minecraft自定义矿场世界生成插件
+# MineWorldGenerator - MC自定义矿场世界生成插件
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.12--1.20-LightGreen) ![License](https://img.shields.io/badge/License-MIT-green)
 
