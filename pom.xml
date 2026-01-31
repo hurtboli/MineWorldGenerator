@@ -6,10 +6,9 @@
 
     <groupId>com.excemc.mineworldgenerator</groupId>
     <artifactId>MineWorldGenerator</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-Beta8</version>
     <packaging>jar</packaging>
 
-    <!-- 显式添加中央仓库 -->
     <repositories>
         <repository>
             <id>central</id>
