@@ -1,5 +1,5 @@
 name: MineWorldGenerator
-version: 1.0.2-SNAPSHOT
+version: 1.0.3-Beta8
 main: com.excemc.mineworldgenerator.Main
 api-version: 1.12.2
 description: 矿场世界生成器
