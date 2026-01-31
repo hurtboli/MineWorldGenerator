@@ -1,109 +1,116 @@
 package com.excemc.mineworldgenerator;
 
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
 
 public class WorldGenerator extends ChunkGenerator {
-    // 地形参数
-    private static final int BASE_HEIGHT = 60;
-    private static final int HEIGHT_VARIATION = 50;
-    private static final double NOISE_SCALE = 0.05;
-
-    // 地层材质
-    private static final Material[] STRATUM = {
-            Material.STONE,
-            Material.STONE,
-            Material.STONE,
-            Material.STONE
-    };
-
     private final ConfigManager configManager;
 
     public WorldGenerator(ConfigManager configManager) {
         this.configManager = configManager;
     }
 
-    @Override
-    public byte[][] generateBlockSections(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome) {
-        byte[][] chunkSections = new byte[world.getMaxHeight() >> 4][]; // 16x16x16 sections
-
-        // 设置生物群系
-        setBiomeGrid(biome);
-
-        // 生成地形
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                int worldX = (chunkX << 4) + x;
-                int worldZ = (chunkZ << 4) + z;
-
-                // 计算地表高度
-                double noise = fractalNoise(worldX, worldZ, 3);
-                int surfaceY = BASE_HEIGHT + (int)(noise * HEIGHT_VARIATION);
-
-                // 填充方块
-                for (int y = 0; y <= surfaceY; y++) {
-                    Material material = getMaterialForLayer(y, surfaceY);
-                    setBlock(chunkSections, x, y, z, material);
+    public ChunkData generateChunkData(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome) {
+        ChunkData chunk = this.createChunkData(world);
+        for (int x = 0; x < 16; ++x) {
+            for (int z = 0; z < 16; ++z) {
+                int worldX = chunkX * 16 + x;
+                int worldZ = chunkZ * 16 + z;
+                int height = this.calculateTerrainHeight(worldX, worldZ);
+                chunk.setBlock(x, 0, z, Material.BEDROCK);
+                for (int y = 1; y <= height; ++y) {
+                    chunk.setBlock(x, y, z, Material.STONE);
                 }
             }
         }
-
-        return chunkSections;
+        return chunk;
     }
 
-    private Material getMaterialForLayer(int y, int surfaceY) {
-        if (y == 0) return Material.BEDROCK;
-        if (y == surfaceY) return STRATUM[0];
-        if (y > surfaceY - 3) return STRATUM[1];
-        if (y > surfaceY - 6) return STRATUM[2];
-        return STRATUM[3];
+    private int calculateTerrainHeight(int x, int z) {
+        // 主噪声 - 增加频率产生更多起伏
+        double mainNoise = this.perlinNoise((double)x * 0.015, (double)z * 0.015, 0);
+        
+        // 次级噪声 - 大尺度变化
+        double secondaryNoise = this.perlinNoise((double)x * 0.007, (double)z * 0.007, 1000);
+        
+        // 细节噪声 - 小尺度变化，增加权重
+        double detailNoise = this.perlinNoise((double)x * 0.06, (double)z * 0.06, 2000);
+        
+        // 额外的正弦波叠加，产生更规律的波浪形山脉
+        double sineWave = Math.sin((double)x * 0.04) * Math.cos((double)z * 0.04) * 0.3;
+        double sineWave2 = Math.sin((double)x * 0.008 + 1.5) * Math.cos((double)z * 0.01 + 0.8) * 0.2;
+        
+        // 调整权重：增加主噪声和正弦波的影响，减少平滑效果
+        double combinedNoise = mainNoise * 0.45 + secondaryNoise * 0.10 + detailNoise * 0.1 + sineWave + sineWave2;
+        
+        // 归一化到 [0, 1]
+        double normalizedNoise = (combinedNoise + 1.0) / 2.0;
+        
+        // 只使用一次 smoothstep，保留更多起伏
+        normalizedNoise = this.smoothstep(normalizedNoise);
+        
+        // 使用更小的指数，减少平顶效果
+        normalizedNoise = Math.pow(normalizedNoise, 1.2);
+        
+        // 限制在合理范围
+        normalizedNoise = Math.max(0.0, Math.min(1.0, normalizedNoise));
+        
+        int minHeight = 100;
+        int maxHeight = 240;
+        int height = (int)((double)minHeight + normalizedNoise * (double)(maxHeight - minHeight));
+        return Math.max(minHeight, Math.min(maxHeight, height));
     }
 
-    private void setBlock(byte[][] chunkSections, int x, int y, int z, Material material) {
-        int section = y >> 4;
-        if (chunkSections[section] == null) {
-            chunkSections[section] = new byte[4096];
-        }
-        int index = (y & 0xF) << 8 | z << 4 | x;
-        chunkSections[section][index] = (byte) material.getId();
+    private double perlinNoise(double x, double z, int seed) {
+        int xi = (int)Math.floor(x);
+        int zi = (int)Math.floor(z);
+        double xf = x - (double)xi;
+        double zf = z - (double)zi;
+        double u = this.fade(xf);
+        double v = this.fade(zf);
+        int aa = this.hash(xi, zi, seed);
+        int ab = this.hash(xi, zi + 1, seed);
+        int ba = this.hash(xi + 1, zi, seed);
+        int bb = this.hash(xi + 1, zi + 1, seed);
+        double x1 = this.lerp(this.grad(aa, xf, zf), this.grad(ba, xf - 1.0, zf), u);
+        double x2 = this.lerp(this.grad(ab, xf, zf - 1.0), this.grad(bb, xf - 1.0, zf - 1.0), u);
+        return this.lerp(x1, x2, v);
     }
 
-    private void setBiomeGrid(BiomeGrid biome) {
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                biome.setBiome(x, z, Biome.PLAINS);
-            }
-        }
+    private int hash(int x, int z, int seed) {
+        int h = seed + x * 374761393 + z * 668265263;
+        h = (h ^ h >> 13) * 1274126177;
+        return h ^ h >> 16;
     }
 
-    private double fractalNoise(int x, int z, int octaves) {
-        double total = 0;
-        double frequency = 1.0;
-        double amplitude = 1.0;
-        double maxValue = 0;
-
-        for (int i = 0; i < octaves; i++) {
-            total += noise(x * frequency * NOISE_SCALE, z * frequency * NOISE_SCALE) * amplitude;
-            maxValue += amplitude;
-            amplitude *= 0.5;
-            frequency *= 2;
-        }
-
-        return total / maxValue;
+    private double grad(int hash, double x, double z) {
+        int h = hash & 7;
+        double u = h < 4 ? x : z;
+        double v = h < 4 ? z : x;
+        return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
     }
 
-    private double noise(double x, double z) {
-        return (Math.sin(x) * Math.cos(z) + 1) / 2;
+    private double fade(double t) {
+        return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
     }
 
-    @Override
+    private double lerp(double a, double b, double t) {
+        return a + t * (b - a);
+    }
+
+    private double smoothstep(double t) {
+        return t * t * (3.0 - 2.0 * t);
+    }
+
     public List<BlockPopulator> getDefaultPopulators(World world) {
-        return Arrays.asList(new OreGenerator(configManager));
+        return Arrays.asList(
+            new OreGenerator(this.configManager),
+            new LiquidGenerator(this.configManager)
+        );
     }
 }
