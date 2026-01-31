@@ -1,36 +1,53 @@
 # config.yml
+liquid:
+  WATER:
+    minY: 1
+    maxY: 30
+    chance: 0.001
+  LAVA:
+    minY: 1
+    maxY: 30
+    chance: 0.001
 ores:
   COAL_ORE:
     minY: 1
-    maxY: 130
+    maxY: 210
     chance: 0.00142
+    amounts: 1-5
 
   IRON_ORE:
     minY: 1
-    maxY: 130
+    maxY: 210
     chance: 0.00088
+    amounts: 1-5
+    specialStructureChance: 0.15
 
   GOLD_ORE:
     minY: 1
-    maxY: 60
+    maxY: 30
     chance: 0.00036
+    amounts: 1-3
 
   REDSTONE_ORE:
     minY: 1
-    maxY: 60
+    maxY: 30
     chance: 0.00102
+    amounts: 1-4
 
   LAPIS_ORE:
     minY: 1
-    maxY: 60
+    maxY: 30
     chance: 0.00059
+    amounts: 1-4
 
   DIAMOND_ORE:
     minY: 1
     maxY: 21
     chance: 0.00033
+    amounts: 1-3
 
   EMERALD_ORE:
     minY: 1
     maxY: 21
     chance: 0.00022
+    amounts: 1-2
