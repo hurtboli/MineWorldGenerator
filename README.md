@@ -57,7 +57,7 @@ public class CustomOreGenerator extends BlockPopulator {
 ```
 
 ##  📜 开源协议
--  本项目采用 MIT License，欢迎二次开发与商业使用。使用本插件时需遵循Minecraft EULA。
+-  本项目采用 MIT License，欢迎二次开发与商业使用，开发后的软件仅需添加署名"hurtboli"即可。使用本插件时需遵循Minecraft EULA。
 -  原作者：hurtboli(From [ExcellentMC](https://www.excemc.com))
 
 ##  📦 编译说明
