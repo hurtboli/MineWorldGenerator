@@ -1,9 +1,9 @@
 # MineWorldGenerator - MC自定义矿场世界生成插件
 
-![Minecraft](https://img.shields.io/badge/Minecraft-1.12--1.20-LightGreen) ![License](https://img.shields.io/badge/License-MIT-green)
+![Minecraft](https://img.shields.io/badge/Minecraft-1.12-LightGreen) ![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-LightGreen) ![License](https://img.shields.io/badge/License-MIT-green)
 
 ## 📖 项目简介
-这是一个基于Spigot API开发的自定义矿场世界生成插件，通过分形噪声算法生成动态地形，支持可配置的矿石分布系统。适用于需要自定义矿场世界的服务器场景。
+这是一个基于SpigotAPI开发的自定义矿场世界生成插件，通过分形噪声算法生成动态地形，支持可配置的矿石分布系统。适用于需要自定义矿场世界的服务器场景。
 
 ## ✨ 核心特性
 ### 🏔️ 动态地形生成
@@ -27,9 +27,8 @@ ores:
 
 ##  🚀 版本支持
 该插件在以下版本测试可用：
-- Bukkit 1.8.8 1.12 1.12.2
-- Spigot 1.8.8 1.12 1.12.2 
-- Paper 1.8.8 1.12 1.12.2
+- Spigot 1.12.2
+- Paper 1.12.2 1.21.11
 
 ##  🛠️ 快速安装
 1.  将编译后的MineWorldGenerator.jar放入服务器plugins/目录
@@ -61,7 +60,7 @@ public class CustomOreGenerator extends BlockPopulator {
 
 ##  📦 编译说明
 ### 🎛️  编译环境
--  Java 8 (With JDK)
+-  Java (With JDK)
 -  Maven (3.2+ Better)
 ### 📘  编译步骤
 该插件使用Maven编译，需要将代码下载解压到某一文件夹后通过以下步骤编译：
