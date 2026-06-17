@@ -1,6 +1,7 @@
 # MineWorldGenerator - MC自定义矿场世界生成插件
 
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.12-LightGreen) ![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-LightGreen) ![License](https://img.shields.io/badge/License-MIT-green)
+
 ![Static Badge](https://img.shields.io/badge/Java-8-orange) ![Static Badge](https://img.shields.io/badge/Java-21-orange) ![Static Badge](https://img.shields.io/badge/Java-25-orange)
 
 ## 📖 项目简介
